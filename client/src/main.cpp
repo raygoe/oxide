@@ -58,6 +58,11 @@ int main(int arg, char ** argv) {
             }
         }
 
+        flatbuffers::Verifier verifier((uint8_t*)buffer.get(), size);
+        bool good = VerifyMonsterBuffer(verifier);
+        if (!good) {
+            throw std::runtime_error("Buffer is fubar.");
+        }
         auto monster = GetMonster(buffer.get());
 
         std::cout << "My monster is named: " << monster->name()->c_str() << std::endl;
