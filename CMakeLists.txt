@@ -33,6 +33,7 @@ if ( NOT WIN32 )
     endif ( )
     
     set ( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3" )  # Optimize
+    include_directories ( "/usr/local/include" )
 else ( )
     get_WIN32_WINNT(ver)
     add_definitions(-D_WIN32_WINNT=${ver})
