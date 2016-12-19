@@ -15,11 +15,21 @@ endmacro()
 # Tell CMake where to find additional find modules
 set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake/Modules/" )
 
+if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
+  set(OS_MACOSX 1)
+  set(OS_POSIX 1)
+elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+  set(OS_LINUX 1)
+  set(OS_POSIX 1)
+elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
+  set(OS_WINDOWS 1)
+endif()
+
 # Import macros
 include ( CheckCXXCompilerFlag )
 
 # C++11 Requirement for Linux
-if ( NOT WIN32 )
+if ( OS_POSIX )
     check_cxx_compiler_flag ( "-std=c++11" COMPILER_SUPPORTS_CXX11 )
     check_cxx_compiler_flag ( "-std=c++0x" COMPILER_SUPPORTS_CXX0X )
     set ( CMAKE_CXX_COMPILER_ARG1 "-std=c++11" )
@@ -32,7 +42,7 @@ if ( NOT WIN32 )
         message ( STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
     endif ( )
     
-    set ( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3" )  # Optimize
+    set ( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wno-deprecated-declarations" )  # Optimize
 else ( )
     get_WIN32_WINNT(ver)
     add_definitions(-D_WIN32_WINNT=${ver})
