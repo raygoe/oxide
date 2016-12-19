@@ -33,7 +33,7 @@ macro(GET_CEF_URL)
     message ( FATAL_ERROR "Unsupported ARCH type." )
   endif ()
   set ( CEF_VER_STR ${CEF_VER}.${CEF_GIT_TAG} )
-  set ( CEF_URL https://cefbuilds.s3.amazonaws.com/${CEF_BRANCH_TAG}/${CEF_ARCH}/${CEF_CHROME_VER}/cef_binary_${CEF_VER_STR}_${CEF_ARCH_LONG}.7z )
+  set ( CEF_URL http://cefbuilds.s3.amazonaws.com/${CEF_BRANCH_TAG}/${CEF_ARCH}/${CEF_CHROME_VER}/cef_binary_${CEF_VER_STR}_${CEF_ARCH_LONG}.7z )
 endmacro()
 
 #

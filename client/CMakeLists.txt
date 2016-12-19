@@ -73,16 +73,16 @@ set(OXIDE_RESOURCES_SRCS
 )
 
 set(CEF_TARGET "oxide_client")
+set(CEF_LIBRARIES ${CEF_LIB} ${CEF_LIB_WRAPPER} )
 if(OS_MACOSX)
   set(CEF_HELPER_TARGET "oxide_client Helper")
 endif()
 
 # Logical target used to link the libcef library.
-ADD_LOGICAL_TARGET("libcef_lib" "${CEF_LIB_DEBUG}" "${CEF_LIB_RELEASE}")
+#ADD_LOGICAL_TARGET("libcef_lib" "${CEF_LIB_DEBUG}" "${CEF_LIB_RELEASE}")
 
 # Determine the target output directory.
 SET_CEF_TARGET_OUT_DIR()
-
 
 #
 # Linux configuration.
@@ -91,8 +91,9 @@ SET_CEF_TARGET_OUT_DIR()
 if(OS_LINUX)
   # Executable target.
   add_executable(${CEF_TARGET} ${OXIDE_SRCS})
-  add_dependencies(${CEF_TARGET} oxide_client_flatbuffers)
-  target_link_libraries(${CEF_TARGET} libcef_lib ${CEF_STANDARD_LIBS})
+  add_dependencies(${CEF_TARGET} cef oxide_client_flatbuffers)
+  link_directories ()
+  target_link_libraries(${CEF_TARGET} ${CEF_LIBRARIES} ${CEF_STANDARD_LIBS})
 
   # Set rpath so that libraries can be placed next to the executable.
   set_target_properties(${CEF_TARGET} PROPERTIES INSTALL_RPATH "$ORIGIN")
@@ -124,8 +125,8 @@ if(OS_MACOSX)
   add_executable(${CEF_HELPER_TARGET} MACOSX_BUNDLE ${OXIDE_HELPER_SRCS})
   add_dependencies(${CEF_HELPER_TARGET} cef oxide_client_flatbuffers)
 
-  ADD_LOGICAL_TARGET("libcef_dll_wrapper" "${CEF_LIB_WRAPPER_DEBUG}" "${CEF_LIB_WRAPPER_RELEASE}")
-  target_link_libraries(${CEF_HELPER_TARGET} libcef_lib libcef_dll_wrapper ${CEF_STANDARD_LIBS})
+  #ADD_LOGICAL_TARGET("libcef_dll_wrapper" "${CEF_LIB_WRAPPER_DEBUG}" "${CEF_LIB_WRAPPER_RELEASE}")
+  target_link_libraries(${CEF_HELPER_TARGET} ${CEF_LIBRARIES} ${CEF_STANDARD_LIBS})
   set_target_properties(${CEF_HELPER_TARGET} PROPERTIES
     MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/mac/helper-Info.plist
     )
@@ -136,7 +137,7 @@ if(OS_MACOSX)
   # Main executable target.
   add_executable(${CEF_TARGET} MACOSX_BUNDLE ${OXIDE_RESOURCES_SRCS} ${OXIDE_SRCS})
   #add_dependencies(${CEF_TARGET} libcef_dll_wrapper "${CEF_HELPER_TARGET}")
-  target_link_libraries(${CEF_TARGET} libcef_lib libcef_dll_wrapper ${CEF_STANDARD_LIBS})
+  target_link_libraries(${CEF_TARGET} ${CEF_LIBRARIES} ${CEF_STANDARD_LIBS})
   set_target_properties(${CEF_TARGET} PROPERTIES
     RESOURCE "${OXIDE_RESOURCES_SRCS}"
     MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/mac/Info.plist
@@ -182,7 +183,7 @@ if(OS_WINDOWS)
   add_dependencies(${CEF_TARGET} cef oxide_client_flatbuffers)
 
   ADD_LOGICAL_TARGET("libcef_dll_wrapper" "${CEF_LIB_WRAPPER_DEBUG}" "${CEF_LIB_WRAPPER_RELEASE}")
-  target_link_libraries(${CEF_TARGET} libcef_lib libcef_dll_wrapper ${CEF_STANDARD_LIBS})
+  target_link_libraries(${CEF_TARGET} ${CEF_LIBRARIES} ${CEF_STANDARD_LIBS})
 
   if(USE_SANDBOX)
     # Logical target used to link the cef_sandbox library.

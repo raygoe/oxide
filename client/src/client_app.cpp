@@ -7,10 +7,10 @@
 #include "include/cef_command_line.h"
 #include "include/wrapper/cef_helpers.h"
 
-OxideClient::OxideClient() {
+OxideApp::OxideApp() {
 }
 
-void OxideClient::OnContextInitialized() {
+void OxideApp::OnContextInitialized() {
   CEF_REQUIRE_UI_THREAD();
 
   // Information used when creating the native window.
@@ -22,8 +22,8 @@ void OxideClient::OnContextInitialized() {
   window_info.SetAsPopup(NULL, "oxide_client");
 #endif
 
-  // SimpleHandler implements browser-level callbacks.
-  CefRefPtr<SimpleHandler> handler(new SimpleHandler());
+  // OxideHandler implements browser-level callbacks.
+  CefRefPtr<OxideHandler> handler(new OxideHandler());
 
   // Specify CEF browser settings here.
   CefBrowserSettings browser_settings;

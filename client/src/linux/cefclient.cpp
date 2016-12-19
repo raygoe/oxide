@@ -46,10 +46,10 @@ int main(int argc, char* argv[]) {
   // Specify CEF global settings here.
   CefSettings settings;
 
-  // SimpleApp implements application-level callbacks for the browser process.
+  // OxideApp implements application-level callbacks for the browser process.
   // It will create the first browser instance in OnContextInitialized() after
   // CEF has initialized.
-  CefRefPtr<SimpleApp> app(new SimpleApp);
+  CefRefPtr<OxideApp> app(new OxideApp);
 
   // Initialize CEF for the browser process.
   CefInitialize(main_args, settings, app.get(), NULL);

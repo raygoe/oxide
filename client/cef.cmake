@@ -21,7 +21,7 @@ endif()
 ExternalProject_Add(
     cef
     URL ${CEF_URL}
-    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/vendor/cef
+    PREFIX ${CMAKE_SOURCE_DIR}/vendor/cef
     INSTALL_COMMAND ""
 )
 
@@ -47,10 +47,11 @@ if(NOT CMAKE_BUILD_TYPE AND
 endif()
 
 # Source include directory.
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${SOURCE_DIR})
 
 # Source include CEF3 directory.
 ExternalProject_Get_Property(cef SOURCE_DIR)
+ExternalProject_Get_Property(cef BINARY_DIR)
 include_directories(${SOURCE_DIR})
 
 # Allow C++ programs to use stdint.h macros specified in the C99 standard that
@@ -148,21 +149,24 @@ if(OS_LINUX)
   set(CEF_STANDARD_LIBS "X11")
 
   # CEF directory paths.
-  set(CEF_RESOURCE_DIR        "${CMAKE_CURRENT_SOURCE_DIR}/Resources")
-  set(CEF_BINARY_DIR          "${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_BUILD_TYPE}")
-  set(CEF_BINARY_DIR_DEBUG    "${CMAKE_CURRENT_SOURCE_DIR}/Debug")
-  set(CEF_BINARY_DIR_RELEASE  "${CMAKE_CURRENT_SOURCE_DIR}/Release")
+  set(CEF_RESOURCE_DIR        "${SOURCE_DIR}/Resources")
+  set(CEF_BINARY_DIR          "${SOURCE_DIR}/${CMAKE_BUILD_TYPE}")
+  set(CEF_BINARY_DIR_DEBUG    "${SOURCE_DIR}/Debug")
+  set(CEF_BINARY_DIR_RELEASE  "${SOURCE_DIR}/Release")
 
   # CEF library paths.
+  set(CEF_LIB         "${CEF_BINARY_DIR}/libcef.so")
   set(CEF_LIB_DEBUG   "${CEF_BINARY_DIR_DEBUG}/libcef.so")
   set(CEF_LIB_RELEASE "${CEF_BINARY_DIR_RELEASE}/libcef.so")
+  
+  set(CEF_LIB_WRAPPER         "${BINARY_DIR}/libcef_dll/libcef_dll_wrapper.a")
+  set(CEF_LIB_WRAPPER_DEBUG   "${BINARY_DIR}/libcef_dll/Debug/libcef_dll_wrapper.a")
+  set(CEF_LIB_WRAPPER_RELEASE "${BINARY_DIR}/libcef_dll/Release/libcef_dll_wrapper.a")
 
   # List of CEF binary files.
   set(CEF_BINARY_FILES
     chrome-sandbox
-    libffmpegsumo.so
     libcef.so
-    libpdf.so
     natives_blob.bin
     snapshot_blob.bin
     )
@@ -253,11 +257,12 @@ if(OS_MACOSX)
   set(CEF_BINARY_DIR_RELEASE  "${SOURCE_DIR}/Release")
 
   # CEF library paths.
+  set(CEF_LIB         "${CEF_BINARY_DIR}/Chromium Embedded Framework.framework/Chromium Embedded Framework")
   set(CEF_LIB_DEBUG   "${CEF_BINARY_DIR_DEBUG}/Chromium Embedded Framework.framework/Chromium Embedded Framework")
   set(CEF_LIB_RELEASE "${CEF_BINARY_DIR_RELEASE}/Chromium Embedded Framework.framework/Chromium Embedded Framework")
 
   # CEF wrapper library path.
-  ExternalProject_Get_Property(cef BINARY_DIR)
+  set(CEF_LIB_WRAPPER         "${BINARY_DIR}/libcef_dll/$<CONFIGURATION>/libcef_dll_wrapper.a")
   set(CEF_LIB_WRAPPER_DEBUG   "${BINARY_DIR}/libcef_dll/Debug/libcef_dll_wrapper.a")
   set(CEF_LIB_WRAPPER_RELEASE "${BINARY_DIR}/libcef_dll/Release/libcef_dll_wrapper.a")
 
@@ -321,11 +326,12 @@ if(OS_WINDOWS)
   set(CEF_BINARY_DIR_RELEASE  "${SOURCE_DIR}/Release")
 
   # CEF library paths.
+  set(CEF_LIB         "${CEF_BINARY_DIR}/libcef.lib")
   set(CEF_LIB_DEBUG   "${CEF_BINARY_DIR_DEBUG}/libcef.lib")
   set(CEF_LIB_RELEASE "${CEF_BINARY_DIR_RELEASE}/libcef.lib")
 
   # CEF wrapper library path.
-  ExternalProject_Get_Property(cef BINARY_DIR)
+  set(CEF_LIB_WRAPPER         "${BINARY_DIR}/libcef_dll/$<CONFIGURATION>/libcef_dll_wrapper.lib")
   set(CEF_LIB_WRAPPER_DEBUG   "${BINARY_DIR}/libcef_dll/Debug/libcef_dll_wrapper.lib")
   set(CEF_LIB_WRAPPER_RELEASE "${BINARY_DIR}/libcef_dll/Release/libcef_dll_wrapper.lib")
 
