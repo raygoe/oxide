@@ -43,6 +43,7 @@ if ( OS_POSIX )
     endif ( )
     
     set ( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wno-deprecated-declarations" )  # Optimize
+    include_directories ( "/usr/local/include" )
 else ( )
     get_WIN32_WINNT(ver)
     add_definitions(-D_WIN32_WINNT=${ver})
