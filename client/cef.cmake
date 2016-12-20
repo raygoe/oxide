@@ -339,19 +339,13 @@ if(OS_WINDOWS)
   set(CEF_BINARY_FILES
     d3dcompiler_43.dll
     d3dcompiler_47.dll
-    ffmpegsumo.dll
     libcef.dll
     libEGL.dll
     libGLESv2.dll
-    pdf.dll
+    widevinecdmadapter.dll
+    natives_blob.bin
+    snapshot_blob.bin
     )
-  if(PROJECT_ARCH STREQUAL "x86")
-    # Only used on 32-bit platforms.
-    set(CEF_BINARY_FILES
-      ${CEF_BINARY_FILES}
-      wow_helper.exe
-      )
-  endif()
 
   # List of CEF resource files.
   set(CEF_RESOURCE_FILES

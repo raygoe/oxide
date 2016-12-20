@@ -1,3 +1,5 @@
 build/
 out/
 vendor/
+Win32/
+x64/

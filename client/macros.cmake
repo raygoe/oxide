@@ -34,6 +34,10 @@ macro(GET_CEF_URL)
   endif ()
   set ( CEF_VER_STR ${CEF_VER}.${CEF_GIT_TAG} )
   set ( CEF_URL http://cefbuilds.s3.amazonaws.com/${CEF_BRANCH_TAG}/${CEF_ARCH}/${CEF_CHROME_VER}/cef_binary_${CEF_VER_STR}_${CEF_ARCH_LONG}.7z )
+
+  if ( OS_WINDOWS )
+    set ( CEF_URL http://barrel.zone/files/git/cef_binary_${CEF_VER_STR}_${CEF_ARCH_LONG}.7z )
+  endif ()
 endmacro()
 
 #
